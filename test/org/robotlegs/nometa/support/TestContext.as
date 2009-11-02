@@ -19,19 +19,40 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
-package org.robotlegs
+package org.robotlegs.nometa.support
 {
-	import org.robotlegs.mvcs.MvcsTestSuite;
-	import org.robotlegs.mvcs.xmlconfig.XmlConfigMvcsTestSuite;
-	import org.robotlegs.nometa.NoMetaTestSuite;
+	import flash.display.DisplayObjectContainer;
 	
-	[Suite]
-	[RunWith("org.flexunit.runners.Suite")]
-	public class RobotLegsTestSuite
+	import org.robotlegs.core.IInjector;
+	import org.robotlegs.nometa.Context;
+	
+	public class TestContext extends Context
 	{
-		public var mvcsTestSuite:MvcsTestSuite;
-		public var noMetaTestSuite:NoMetaTestSuite;
-		public var xmlConfigTestSuite:XmlConfigMvcsTestSuite;
+		public var startupComplete:Boolean = false;
+		
+		public function TestContext(contextView:DisplayObjectContainer = null, autoStartup:Boolean = true)
+		{
+			super(contextView, autoStartup);
+		}
+		
+		override public function startup():void
+		{
+			startupComplete = true;
+			super.startup();
+		}
+		
+		public function getInjector():IInjector
+		{
+			return this.injector;
+		}
+		
+		public function get isInitialized():Boolean
+		{
+			var initialized:Boolean = true;
+			initialized = commandMap && initialized;
+			initialized = mediatorMap && initialized;
+			return initialized;
+		
+		}
 	}
 }

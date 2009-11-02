@@ -20,18 +20,38 @@
  * THE SOFTWARE.
  */
 
-package org.robotlegs
+package org.robotlegs.nometa
 {
-	import org.robotlegs.mvcs.MvcsTestSuite;
-	import org.robotlegs.mvcs.xmlconfig.XmlConfigMvcsTestSuite;
-	import org.robotlegs.nometa.NoMetaTestSuite;
+	import flash.display.DisplayObjectContainer;
+	import flash.events.IEventDispatcher;
 	
-	[Suite]
-	[RunWith("org.flexunit.runners.Suite")]
-	public class RobotLegsTestSuite
+	import org.robotlegs.base.ContextBase;
+	import org.robotlegs.core.ICommandMap;
+	import org.robotlegs.core.IContext;
+	import org.robotlegs.core.IInjector;
+	import org.robotlegs.core.IMediatorMap;
+	
+	/**
+	 * Abstract Nometa <code>IContext</code> implementation
+	 */
+	public class Context extends ContextBase implements IContext
 	{
-		public var mvcsTestSuite:MvcsTestSuite;
-		public var noMetaTestSuite:NoMetaTestSuite;
-		public var xmlConfigTestSuite:XmlConfigMvcsTestSuite;
+		public function Context(contextView:DisplayObjectContainer = null, autoStartup:Boolean = true)
+		{
+			super(contextView, autoStartup);
+		}
+		
+		/**
+		 * @inheritDoc
+		 */
+		override protected function mapInjections():void
+		{
+			injector.mapValue(DisplayObjectContainer, contextView);
+			injector.mapValue(IInjector, injector);
+			injector.mapValue(IEventDispatcher, eventDispatcher);
+			injector.mapValue(ICommandMap, commandMap);
+			injector.mapValue(IMediatorMap, mediatorMap);
+		}
+	
 	}
 }

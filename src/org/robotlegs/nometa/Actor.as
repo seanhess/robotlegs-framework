@@ -20,18 +20,40 @@
  * THE SOFTWARE.
  */
 
-package org.robotlegs
+package org.robotlegs.nometa
 {
-	import org.robotlegs.mvcs.MvcsTestSuite;
-	import org.robotlegs.mvcs.xmlconfig.XmlConfigMvcsTestSuite;
-	import org.robotlegs.nometa.NoMetaTestSuite;
+	import flash.events.Event;
+	import flash.events.IEventDispatcher;
 	
-	[Suite]
-	[RunWith("org.flexunit.runners.Suite")]
-	public class RobotLegsTestSuite
+	import org.robotlegs.base.EventMap;
+	import org.robotlegs.core.IEventMap;
+	
+	/**
+	 * Abstract Nometa <code>IActor</code> implementation
+	 */
+	public class Actor
 	{
-		public var mvcsTestSuite:MvcsTestSuite;
-		public var noMetaTestSuite:NoMetaTestSuite;
-		public var xmlConfigTestSuite:XmlConfigMvcsTestSuite;
+		protected var eventDispatcher:IEventDispatcher;
+		protected var _eventMap:IEventMap;
+		
+		public function Actor(eventDispatcher:IEventDispatcher)
+		{
+			this.eventDispatcher = eventDispatcher;
+		}
+		
+		protected function get eventMap():IEventMap
+		{
+			return _eventMap || (_eventMap = new EventMap(eventDispatcher));
+		}
+		
+		/**
+		 * Dispatch helper method
+		 *
+		 * @param event The <code>Event</code> to dispatch on the <code>IContext</code>'s <code>IEventDispatcher</code>
+		 */
+		protected function dispatch(event:Event):void
+		{
+			eventDispatcher.dispatchEvent(event);
+		}
 	}
 }

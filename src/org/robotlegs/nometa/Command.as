@@ -20,18 +20,38 @@
  * THE SOFTWARE.
  */
 
-package org.robotlegs
+package org.robotlegs.nometa
 {
-	import org.robotlegs.mvcs.MvcsTestSuite;
-	import org.robotlegs.mvcs.xmlconfig.XmlConfigMvcsTestSuite;
-	import org.robotlegs.nometa.NoMetaTestSuite;
+	import flash.events.Event;
+	import flash.events.IEventDispatcher;
 	
-	[Suite]
-	[RunWith("org.flexunit.runners.Suite")]
-	public class RobotLegsTestSuite
+	/**
+	 * Abstract Nometa <code>ICommand</code> implementation
+	 */
+	public class Command
 	{
-		public var mvcsTestSuite:MvcsTestSuite;
-		public var noMetaTestSuite:NoMetaTestSuite;
-		public var xmlConfigTestSuite:XmlConfigMvcsTestSuite;
+		protected var eventDispatcher:IEventDispatcher;
+		
+		public function Command(eventDispatcher:IEventDispatcher)
+		{
+			this.eventDispatcher = eventDispatcher;
+		}
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function execute():void
+		{
+		}
+		
+		/**
+		 * Dispatch helper method
+		 *
+		 * @param event The <code>Event</code> to dispatch on the <code>IContext</code>'s <code>IEventDispatcher</code>
+		 */
+		public function dispatch(event:Event):void
+		{
+			eventDispatcher.dispatchEvent(event);
+		}
 	}
 }
